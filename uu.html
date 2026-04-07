@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pengadilan Kota Indopride</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+/* GLOBAL */
+body {
+    background: #f4f6f9;
+    font-family: Georgia, 'Times New Roman', serif;
+    color: #1f2937;
+}
+
+/* HEADER */
+.header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 28px;
+    background: #1f3347;
+    color: white;
+    border-bottom: 2px solid #c9a74e;
+}
+
+.logo {
+    width: 52px;
+}
+
+/* FIX ALIGN */
+.header-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1.25;
+}
+
+/* TYPOGRAPHY FIX */
+.header-title {
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+}
+
+.header-sub {
+    font-size: 13px;
+    margin-top: 2px;
+    color: #d1d5db;
+}
+
+.header-address {
+    font-size: 11.5px;
+    margin-top: 2px;
+    color: #9ca3af;
+}
+
+/* CONTAINER */
+.container-box {
+    margin-top: 18px;
+}
+
+/* SIDEBAR */
+.sidebar {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    padding: 14px;
+    height: 85vh;
+    overflow-y: auto;
+    border-radius: 6px;
+}
+
+.sidebar-title {
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #6b7280;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 6px;
+}
+
+/* BUTTON SWITCH */
+.doc-btn {
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 4px;
+}
+
+.doc-btn.active {
+    background: #1f3347;
+    color: white;
+}
+
+/* SEARCH */
+.search-box {
+    font-size: 13px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+
+/* BAB LIST */
+.bab-item {
+    padding: 8px 10px;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: all 0.15s ease;
+    border-radius: 4px;
+}
+
+.bab-item:hover {
+    background: #f3f4f6;
+}
+
+.bab-item.active {
+    border-left: 3px solid #c9a74e;
+    background: #f9fafb;
+}
+
+/* TYPOGRAPHY BAB */
+.bab-title {
+    font-size: 12.5px;
+    font-weight: 600;
+}
+
+.bab-sub {
+    font-size: 11.5px;
+    color: #6b7280;
+}
+
+/* CONTENT */
+.content {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+}
+
+/* HEADER CONTENT */
+.content-header {
+    padding: 14px 18px;
+    border-bottom: 1px solid #e5e7eb;
+    font-weight: 600;
+    font-size: 14px;
+    background: #fafafa;
+}
+
+/* IFRAME */
+.doc-frame {
+    width: 100%;
+    height: 82vh;
+    border: none;
+}
+
+/* FOOTER */
+.footer {
+    text-align: center;
+    font-size: 11px;
+    padding: 8px;
+    color: #9ca3af;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <div class="header-left">
+        <img src="logo.png" alt="Logo" class="logo">
+    </div>
+
+    <div class="header-center">
+        <div class="header-title">PENGADILAN KOTA INDOPRIDE</div>
+        <div class="header-sub">Sistem Informasi Peraturan & Perundang-undangan</div>
+        <div class="header-address">
+            Jl. Occupation Avenue Kota Indopride – Kode Pos 7239
+        </div>
+    </div>
+</div>
+
+<div class="container container-box">
+<div class="row">
+
+<!-- SIDEBAR -->
+<div class="col-md-3">
+<div class="sidebar">
+
+    <div class="mb-2">
+        <button class="btn btn-sm doc-btn active" onclick="switchDoc('uud', this)">UU Dasar</button>
+        <button class="btn btn-sm btn-outline-secondary doc-btn" onclick="switchDoc('pidana', this)">KUHPidana</button>
+        <button class="btn btn-sm btn-outline-secondary doc-btn" onclick="switchDoc('perdata', this)">KUHPerdata</button>
+    </div>
+
+    <input type="text" id="search" class="form-control search-box" placeholder="Cari BAB...">
+
+    <div class="sidebar-title">Daftar BAB</div>
+
+    <div id="babList"></div>
+
+</div>
+</div>
+
+<!-- CONTENT -->
+<div class="col-md-9">
+<div class="content">
+
+    <div class="content-header" id="judul">Undang-Undang Dasar</div>
+
+    <iframe id="docFrame" class="doc-frame"></iframe>
+
+    <div class="footer">
+        © Pengadilan Kota Indopride
+    </div>
+
+</div>
+</div>
+
+</div>
+</div>
+
+<script>
+const docs = {
+    uud: {
+        title: "Undang-Undang Dasar",
+        base: "https://docs.google.com/document/d/1E612b9zuGkFwTk3K88FcjMko5e9FVUcx",
+        bab: [
+            { nama: "BAB I", judul: "Bentuk dan Kedaulatan", anchor: "h.thkrhexeyyh3" },
+            { nama: "BAB II", judul: "Kekuasaan Pemerintah", anchor: "h.vqzilvzbxizz" },
+            { nama: "BAB III", judul: "Pemerintah Daerah", anchor: "h.58nkymhzzfem" },
+            { nama: "BAB IV", judul: "Dewan Perwakilan Indopride", anchor: "h.5nod43kbrqva" },
+            { nama: "BAB IVA", judul: "Pemilihan Umum", anchor: "h.myyfzagxbqht" },
+            { nama: "BAB V", judul: "Hal Keuangan", anchor: "h.onp6e0m66e3" },
+            { nama: "BAB VA", judul: "Badan Pemeriksaan Keuangan", anchor: "h.ik1es894kd9g" },
+            { nama: "BAB VI", judul: "Kekuasaan Dan Kewenangan Peradilan", anchor: "h.3hosbft2f7rt" },
+            { nama: "BAB VII", judul: "Warga Kota Dan Penduduk", anchor: "h.9xf796fewpj2" },
+            { nama: "BAB VIIA", judul: "Hak Asasi Manusia", anchor: "h.ntfw81oxqvrb" },
+            { nama: "BAB VIII", judul: "Pertahanan Kota Dan Keamanan Kota", anchor: "h.dn57zybelm12" },
+            { nama: "BAB IX", judul: "Pendidikan dan Kebudayaan", anchor: "h.6ll3qb3y63u2" },
+            { nama: "BAB X", judul: "Perekonomian Nasional dan Kesejahteraan Sosial", anchor: "h.mp2mtpqbzzrr" },
+            { nama: "BAB XI", judul: "Perubahan Undang-Undang Dasar", anchor: "h.gun18uby7z45" },
+            { nama: "BAB XII", judul: "Pembentukan Unit/Satuan", anchor: "h.lsp68di1tqmj" },
+            { nama: "Aturan Peralihan", judul: "",anchor: "h.xxq8pepq5i6h" }
+        ]
+    },
+    pidana: {
+        title: "Kitab Undang-Undang Hukum Pidana",
+        base: "https://docs.google.com/document/d/1rG0xhqAneAioDiB9WSrN5oTGX9ghOa5V",
+        bab: [
+            { nama: "BAB I", judul: "KETENTUAN UMUM", anchor: "h.3b92lcod75q5" },
+            { nama: "BAB II", judul: "TINDAK PIDANA DAN PERTANGGUNGJAWABAN PIDANA", anchor: "h.m4sjhjj01g2s" },
+            { nama: "BAB III", judul: "TINDAK PIDANA PENGANIAYAAN WARGA/MELUKAI WARGA", anchor: "h.t6p03wos1jy8"},
+            { nama: "BAB IV", judul: "TINDAK PIDANA PENGHINAAN TERHADAP WARGA", anchor: "h.1cl7tfkw9dt7" },
+            { nama: "BAB V", judul: "TINDAK PIDANA MENGGANGGU KETERTIBAN UMUM", anchor: "h.ssldfcfkgyx9" },
+            { nama: "BAB VI", judul: "TINDAK PIDANA MEMBAWA MINUMAN BERALKOHOL", anchor: "h.nvd499z6ejn8" },
+            { nama: "BAB VII", judul: "TINDAK PIDANA PENIPUAN/MEMBERIKAN INFORMASI PALSU", anchor: "h.oxtsqfce0nz0" },
+            { nama: "BAB VIII", judul: "TINDAK PIDANA MABUK DI AREA PUBLIK/MABUK SAAT MENGEMUDI", anchor: "h.t4gkvqlg9571" },
+            { nama: "BAB IX", judul: "TINDAK PIDANA TELANJANG/MEMAKAI TOPENG DI AREA PUBLIK", anchor: "h.qsw6ju26sg5u" },
+            { nama: "BAB X", judul: "TINDAK PIDANA PENCEMARAN NAMA BAIK/PERBUATAN TIDAK MENYENANGKAN", anchor: "h.pxppi688l0mb" },
+            { nama: "BAB XI", judul: "TINDAK PIDANA MENCURI/MERUSAK KENDARAAN", anchor: "h.6hv6kolzyu9l" },
+            { nama: "BAB XII", judul: "TINDAK PIDANA PERJUDIAN/TARUHAN", anchor: "h.otq4yp39395o" },
+            { nama: "BAB XIII", judul: "TINDAK PIDANA PEMBOBOLAN/PENCURIAN RUMAH", anchor: "h.vo913opiwto7" },
+            { nama: "BAB XIV", judul: "TINDAK PIDANA UPAYA KORUPSI/MELAWAN PETUGAS/MENGHILANGKAN BARANG BUKTI", anchor: "h.i422g24irrkr" },
+            { nama: "BAB XV", judul: "TINDAK PIDANA MENYALAHGUNAKAN ATRIBUT INSTANSI NEGARA", anchor: "h.4rm0odfhfnx5" },
+            { nama: "BAB XVI", judul: "TINDAK PIDANA BERADA DI ZONA MERAH/ZONA TERLARANG", anchor: "h.qbeaqk6vrdxs" },
+            { nama: "BAB XVII", judul: "TINDAK PIDANA KEPEMILIKAN BARANG ILEGAL", anchor: "h.mzsbml3tytt3" },
+            { nama: "BAB XVIII", judul: "TINDAK PIDANA KEPEMILIKAN UANG KOTOR", anchor: "h.1gbq05h3c7jd" },
+            { nama: "BAB XIX", judul: "TINDAK PIDANA PENYALAHGUNAAN BARANG ILEGAL", anchor: "h.ebvx0mr898pb" },
+            { nama: "BAB XX", judul: "TINDAK PIDANA TIDAK MEMILIKI LISENSI SENJATA", anchor: "h.o3b7jiysfvzn" },
+            { nama: "BAB XXI", judul: "TINDAK PIDANA UPAYA PEMBUNUHAN TERHADAP WARGA", anchor: "h.muwuxbv7ryh6" },
+            { nama: "BAB XXII", judul: "TINDAK PIDANA JUAL BELI BARANG/SENJATA ILEGAL (PENGEDAR)", anchor: "h.7nrg3nxyjkl1" },
+            { nama: "BAB XXIII", judul: "TINDAK PIDANA PEMBUNUHAN TERHADAP WARGA", anchor: "h.rwtpy9gfkxdr" },
+            { nama: "BAB XXIV", judul: "TINDAK PIDANA PENODONGAN/PEMBEGALAN TERHADAP WARGA", anchor: "h.ujreqzegm6r6" },
+            { nama: "BAB XXV", judul: "TINDAK PIDANA PENODONGAN/PEMBEGALAN TERHADAP PETUGAS", anchor: "h.8bfcahsbqji" },
+            { nama: "BAB XXVI", judul: "TINDAK PIDANA KEPEMILIKAN SENJATA ILEGAL", anchor: "h.q8uo695y2lrc" },
+            { nama: "BAB XXVII", judul: "TINDAK PIDANA PENYANDERAAN/PENCULIKAN WARGA", anchor: "h.u5l02tiqdgkl" },
+            { nama: "BAB XXVIII", judul: "TINDAK PIDANA KEJAHATAN YANG TIDAK DISENGAJA", anchor: "h.3y22lv2wd5ug" },
+            { nama: "BAB XXIX", judul: "TINDAK PIDANA PENEMBAKAN TERHADAP WARGA", anchor: "h.ofqzgubymw1n" },
+            { nama: "BAB XXX", judul: "TINDAK PIDANA PENEMBAKAN TERHADAP PETUGAS", anchor: "h.647vuh8m5x6h" },
+            { nama: "BAB XXXI", judul: "TINDAK PIDANA PERAMPOKAN DI WARUNG", anchor: "h.i4e26ep68e8c" },
+            { nama: "BAB XXXII", judul: "TINDAK PIDANA PERAMPOKAN DI BANK/JEWELRY", anchor: "h.hbcriw773qbg" },
+            { nama: "BAB XXXIII", judul: "TINDAK PIDANA PEMBOCORAN INFORMASI/RAHASIA NEGARA", anchor: "h.pd61a67kitqz" },
+            { nama: "BAB XXXIV", judul: "TINDAK PIDANA KEPEMILIKAN SENJATA NEGARA", anchor: "h.olh713s11q7d" },
+            { nama: "BAB XXXV", judul: "TINDAK PIDANA PENYALAHGUNAAN TEKNOLOGI", anchor: "h.xgeuhv65y26k" },
+            { nama: "BAB XXXVI", judul: "PERBUATAN MERUSAK BARANG MILIK ORANG LAIN", anchor: "h.ldqaypjqpoj4" },
+            { nama: "BAB XXXVII", judul: "TINDAK PIDANA TERORISME", anchor: "h.g3j3vbszhvzz" }
+
+
+        ]
+    },
+    perdata: {
+        title: "Kitab Undang-Undang Hukum Perdata",
+        base: "https://docs.google.com/document/d/15WEZ-xlUjClJi4-8SOwGxg3I5TB8_Bsi",
+        bab: [
+            { nama: "BAB I", judul: "KETENTUAN UMUM", anchor: "h.xxx1" },
+            { nama: "BAB II", judul: "HAK DAN KEWAJIBAN SUBJEK HUKUM", anchor: "h.xxx2" },
+            { nama: "BAB III", judul: "PERJANJIAN DAN WANPRESTASI", anchor: "h.xxx3" },
+            { nama: "BAB IV", judul: "TANGGUNG JAWAB HUKUM PERDATA DAN PERBUATAN MELAWAN HUKUM (PMH)", anchor: "h.xxx3" },
+            { nama: "BAB V", judul: "PENEGAKAN HUKUM PERDATA", anchor: "h.xxx3" },
+            { nama: "BAB V", judul: "PENUTUP", anchor: "h.xxx3" }
+        ]
+    }
+};
+
+let currentDoc = "uud";
+
+function renderList() {
+    const list = docs[currentDoc].bab;
+    const container = document.getElementById("babList");
+    container.innerHTML = "";
+
+    list.forEach((b, i) => {
+        const div = document.createElement("div");
+        div.className = "bab-item";
+
+        div.innerHTML = `
+            <div class="bab-title">${b.nama}</div>
+            <div class="bab-sub">${b.judul}</div>
+        `;
+
+        div.onclick = () => {
+            loadBab(b.anchor);
+            document.querySelectorAll(".bab-item").forEach(x => x.classList.remove("active"));
+            div.classList.add("active");
+        };
+
+        container.appendChild(div);
+
+        if (i === 0) div.click();
+    });
+}
+
+/* 🔥 PENTING: pakai preview biar toolbar hilang */
+function loadBab(anchor) {
+    const base = docs[currentDoc].base.replace("/edit", "/preview")+ "?rm=minimal";
+    document.getElementById("docFrame").src = base + "#heading=" + anchor;
+}
+
+function switchDoc(type, el) {
+    currentDoc = type;
+    document.getElementById("judul").innerText = docs[type].title;
+
+    document.querySelectorAll(".doc-btn").forEach(btn => {
+        btn.classList.remove("active");
+        btn.classList.add("btn-outline-secondary");
+    });
+
+    el.classList.add("active");
+    el.classList.remove("btn-outline-secondary");
+
+    renderList();
+}
+
+document.getElementById("search").addEventListener("input", function() {
+    const keyword = this.value.toLowerCase();
+
+    const filtered = docs[currentDoc].bab.filter(b =>
+        (b.nama + " " + b.judul).toLowerCase().includes(keyword)
+    );
+
+    const container = document.getElementById("babList");
+    container.innerHTML = "";
+
+    filtered.forEach(b => {
+        const div = document.createElement("div");
+        div.className = "bab-item";
+
+        div.innerHTML = `
+            <div class="bab-title">${b.nama}</div>
+            <div class="bab-sub">${b.judul}</div>
+        `;
+
+        div.onclick = () => loadBab(b.anchor);
+        container.appendChild(div);
+    });
+});
+
+renderList();
+</script>
+
+</body>
+</html>
